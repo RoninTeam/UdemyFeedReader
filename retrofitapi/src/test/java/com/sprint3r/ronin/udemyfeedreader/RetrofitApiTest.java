@@ -19,7 +19,7 @@ public class RetrofitApiTest {
 
     @Test
     public void testCallNextPageUrl() throws InterruptedException {
-        final CountDownLatch ying = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
         retrofitApi = new RetrofitApi();
         feed = retrofitApi.getData();
 
@@ -28,7 +28,7 @@ public class RetrofitApiTest {
             public void onResponse(Response<CoursesDetail> response) {
 
                 feedUdemy = response.body();
-                ying.countDown();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -37,13 +37,13 @@ public class RetrofitApiTest {
             }
 
         });
-        ying.await();
+        countDownLatch.await();
         assertEquals("https://www.udemy.com/api-2.0/courses?page=2", feedUdemy.next);
     }
 
     @Test
     public void testCallTitleResults() throws InterruptedException {
-        final CountDownLatch ying = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
         retrofitApi = new RetrofitApi();
         feed = retrofitApi.getData();
 
@@ -52,7 +52,7 @@ public class RetrofitApiTest {
             public void onResponse(Response<CoursesDetail> response) {
 
                 feedUdemy = response.body();
-                ying.countDown();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -61,7 +61,7 @@ public class RetrofitApiTest {
             }
 
         });
-        ying.await();
+        countDownLatch.await();
         String expect = "Learn and Understand AngularJS";
         assertEquals(expect, feedUdemy.results.get(0).getAsJsonObject().get("title").getAsString());
     }
